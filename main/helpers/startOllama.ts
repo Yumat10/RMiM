@@ -1,7 +1,8 @@
 import { spawn } from "child_process";
 
+const ollamaPort = "11435";
 // Todo: Include natively in project
-const ollamaExecutable = "OLLAMA_HOST=127.0.0.1:11450 ollama";
+const ollamaExecutable = `OLLAMA_HOST=127.0.0.1:${ollamaPort} ollama`;
 
 function runCommand(command, args) {
   return new Promise((resolve, reject) => {
@@ -16,6 +17,11 @@ function runCommand(command, args) {
 export async function startOllama() {
   console.log("---runOllamaApp---");
   try {
+    const killCommand = `lsof -ti :${ollamaPort} | xargs kill -9`;
+    console.log(`Attempting to kill process on port 127.0.0.1${ollamaPort}`);
+    await runCommand(killCommand, []);
+    console.log(`Process on port 127.0.0.1${ollamaPort} killed successfully.`);
+
     // Start Ollama app
     await runCommand(ollamaExecutable, ["serve"]);
     console.log("Ollama started successfully.");

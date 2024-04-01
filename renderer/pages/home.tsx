@@ -17,7 +17,7 @@ const CallTestEndpoint = () => {
     formData.append("dbFile", file);
 
     try {
-      const response = await fetch("http://localhost:3005/api/roast", {
+      const response = await fetch("http://localhost:3005/api/roast/qual", {
         method: "POST",
         body: formData,
       });

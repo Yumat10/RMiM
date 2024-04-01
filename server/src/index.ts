@@ -18,8 +18,8 @@ app.use(cors());
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-app.post("/api/roast", upload.single("dbFile"), async (req, res) => {
-  console.log("---roast---");
+app.post("/api/roast/quant", upload.single("dbFile"), async (req, res) => {
+  console.log("---roast quant---");
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
@@ -35,14 +35,36 @@ app.post("/api/roast", upload.single("dbFile"), async (req, res) => {
     const earlyBirdVsNightOwl = await getEarlyBirdVsNightOwl(db);
     // const monologueMaster = await getMonologueMaster(db);
     // const emojiMoodRing = await getEmojiMoodRing(db);
-    const mistralRes = await askMistral();
-    console.log(mistralRes);
+
     res.json({
       bingeTexts,
       serialConversationalist,
       earlyBirdVsNightOwl,
       // monologueMaster,
       // emojiMoodRing,
+    });
+  } catch (error) {
+    console.error("Error processing database:", error);
+    res.status(500).send("Error processing database");
+  }
+});
+
+app.post("/api/roast/qual", upload.single("dbFile"), async (req, res) => {
+  console.log("---roast qual---");
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  try {
+    const SQL = await initSqlJs();
+    const db = new SQL.Database(new Uint8Array(req.file.buffer));
+    const qualitativeAnalysis = await askMistral(db);
+
+    console.log("---qualitativeAnalysis---");
+    console.log(qualitativeAnalysis);
+
+    res.json({
+      qualitativeAnalysis,
     });
   } catch (error) {
     console.error("Error processing database:", error);

@@ -12,6 +12,7 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@langchain/community": "^0.0.43",
     "@types/sql.js": "^1.4.9",
     "axios": "^1.6.8",
     "cors": "^2.8.5",
