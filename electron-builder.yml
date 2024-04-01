@@ -1,0 +1,12 @@
+appId: com.example.rmim
+productName: RMiM
+copyright: Copyright © 2024 Yuma Tanaka
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+publish: null
