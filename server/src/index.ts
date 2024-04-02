@@ -7,6 +7,7 @@ import {
   // getEmojiMoodRing,
   // getMonologueMaster,
   getSerialConversationalist,
+  getTextsSentToday,
 } from "./parser/getQuantitativeAnalysis";
 import initSqlJs from "sql.js";
 import { askMistral } from "./parser/getQualitativeAnalysis";
@@ -30,6 +31,7 @@ app.post("/api/roast/quant", upload.single("dbFile"), async (req, res) => {
     // Now you can use db.exec(sql) to execute your SQL queries
     // Example: const result = db.exec("SELECT * FROM your_table");
     // Process the result and send a response
+    const numTextsToday = await getTextsSentToday(db);
     const bingeTexts = await getBingeTexterAlerts(db);
     const serialConversationalist = await getSerialConversationalist(db);
     const earlyBirdVsNightOwl = await getEarlyBirdVsNightOwl(db);
@@ -37,9 +39,10 @@ app.post("/api/roast/quant", upload.single("dbFile"), async (req, res) => {
     // const emojiMoodRing = await getEmojiMoodRing(db);
 
     res.json({
-      bingeTexts,
-      serialConversationalist,
-      earlyBirdVsNightOwl,
+      numTextsToday,
+      // bingeTexts,
+      // serialConversationalist,
+      // earlyBirdVsNightOwl,
       // monologueMaster,
       // emojiMoodRing,
     });
@@ -63,17 +66,23 @@ app.post("/api/roast/qual", upload.single("dbFile"), async (req, res) => {
     console.log("---qualitativeAnalysis---");
     console.log(qualitativeAnalysis);
 
-    res.json({
-      qualitativeAnalysis,
-    });
+    res.json(qualitativeAnalysis);
   } catch (error) {
     console.error("Error processing database:", error);
     res.status(500).send("Error processing database");
   }
 });
 
-app.get("/api/custom", (req, res) => {
-  res.json({ message: "This is a custom API endpoint" });
+app.post("/api/test/qual", (req, res) => {
+  res.json({
+    roasts: [
+      "You're the kind of person who thinks 'seen' is a complete response.",
+      "Your emoji game is so outdated, even your phone is embarrassed to suggest them.",
+      "If ghosting were an Olympic sport, you'd have more golds than Michael Phelps.",
+      "Your idea of a deep conversation is sending GIFs back and forth until one of you falls asleep.",
+      "You text like you're still paying by the character. It's 2023, not 2003.",
+    ],
+  });
 });
 
 app.listen(port, () => {

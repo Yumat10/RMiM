@@ -2,14 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-gray-900 text-white;
-  }
+:root {
+  --off-white: #fefefe;
+  --off-black: #010101;
+  --primary: #ff3d00;
+  --secondary: #d8d8d8;
 }
 
-@layer components {
-  .btn-blue {
-    @apply text-white font-bold px-4 py-2 rounded bg-blue-600 hover:bg-blue-500;
+/* @media (prefers-color-scheme: dark) {
+  :root {}
+} */
+
+body {
+  color: var(--off-black);
+  background: var(--off-white);
+}
+
+@layer utilities {
+  .fade-top-bottom {
+    @apply relative;
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 5rem;
+      pointer-events: none;
+    }
+    &::before {
+      top: 0;
+      background: linear-gradient(
+        to bottom,
+        var(--off-white) 0%,
+        transparent 100%
+      );
+    }
+    &::after {
+      bottom: 0;
+      background: linear-gradient(
+        to top,
+        var(--off-white) 0%,
+        transparent 100%
+      );
+    }
   }
 }

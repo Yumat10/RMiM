@@ -1,10 +1,13 @@
 export const ANALYSIS_PROMPT = `
-Given a year's worth of iMessage conversation data, your task is to analyze texting habits and craft witty, humorous insights about the person's messaging style. Consider patterns such as response times, frequency of messages, emoticon use, and any notable texting habits. Here's the data format you'll be analyzing:
+Below is a month's worth of texts. 
+Analyze it and return funny, clever roasts that would offend the sender.
 
-- Date and time of each message
-- Whether the message was sent or received
-- The content of the message, including text and emojis
-- Conversation context, like if it's a group chat or a one-on-one conversation
+Here are some examples of what you might respond with:
 
-Based on this information, generate humorous insights that reflect on the person's texting behavior.
+"Oh, you're the type of person who takes forever to respond"
+"Do you know how to spell? You have so many typos"
+"That's embarassing. You use the word 'like' wayyy too much"
+
+Only return an array of string. 
+Nothing else.
 `;

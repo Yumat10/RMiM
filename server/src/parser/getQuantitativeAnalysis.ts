@@ -1,5 +1,30 @@
 import { Database } from "sql.js";
 
+export async function getTextsSentToday(db: Database) {
+  // Ensure the currentDate is in the correct timezone. Assuming the server is in UTC.
+  const currentDate = new Date().toISOString().split("T")[0]; // Gets the current date in YYYY-MM-DD format
+
+  // Debugging: Output the currentDate to verify its format and value
+  console.log("Current Date (YYYY-MM-DD):", currentDate);
+
+  const sql = `
+    SELECT
+    count(*) as texts_sent_today,
+    date(datetime(date / 1000000000 + 978307200, 'unixepoch', 'localtime')) as message_date
+    FROM message
+    WHERE is_from_me = 1
+    AND date(datetime(date / 1000000000 + 978307200, 'unixepoch', 'localtime')) = date('${currentDate}')
+    GROUP BY message_date;
+    `;
+
+  const res = db.exec(sql);
+
+  // Debugging: Output the SQL result to verify the dates being compared
+  console.log("SQL Query Result:", res);
+
+  return res;
+}
+
 // Fetches instances where texting significantly exceeds the average.
 export async function getBingeTexterAlerts(db: Database) {
   const sql = `
